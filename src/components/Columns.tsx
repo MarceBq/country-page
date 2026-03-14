@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import type { Country } from "../types";
+import type { CountryTable } from "../types";
 
-const columnHelper = createColumnHelper<Country>();
+const columnHelper = createColumnHelper<CountryTable>();
 
 export const columns = [
   columnHelper.accessor("flags.png", {

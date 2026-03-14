@@ -5,11 +5,11 @@ import {
   flexRender,
   type ColumnDef,
 } from "@tanstack/react-table";
-import type { Country } from "../types";
+import type { CountryTable } from "../types";
 
 type CountryTableProps = {
-  data: Country[];
-  columns: ColumnDef<Omit<Country, "status" | "unMember" | "independent">>[];
+  data: CountryTable[];
+  columns: ColumnDef<CountryTable, any>[];
 };
 
 export function CountryTable({ data, columns }: CountryTableProps) {

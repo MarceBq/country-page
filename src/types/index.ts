@@ -19,3 +19,5 @@ export type Filters = {
     independent: boolean;
     sortBy: "population" | "area";
 }
+
+export type CountryTable = Omit<Country, "unMember" | "independent">
