@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useCountriesStore } from "./store/countriesStore";
 import "./styles/style.css";
@@ -6,21 +7,14 @@ import { CountryTable } from "./components/CountryTable";
 import { columns } from "./components/Columns";
 
 function App() {
-  const {
-    
-    loading,
-    fetchCountries,
-    filteredCountries,
-    filterCountries,
-  } = useCountriesStore();
+  const { loading, fetchCountries, filteredCountries, filterCountries } =
+    useCountriesStore();
 
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
-
-  console.log(searchTerm);
 
   useEffect(() => {
     setTimeout(() => {
@@ -54,6 +48,61 @@ function App() {
         </div>
 
         <div className="h-80 bg-gray-200 rounded-lg flex items-center justify-center">
+          <div className="bg-amber-200 p-3 m-5">
+             className="space-y-2">
+        <p className="text-sm text-zinc-400">Sort by</p>
+
+        <Select defaultValue="population">
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="population">Population</SelectItem>
+            <SelectItem value="area">Area</SelectItem>
+            <SelectItem value="name">Name</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Region */}
+      <div className="space-y-3">
+        <p className="text-sm text-zinc-400">Region</p>
+
+        <ToggleGroup
+          type="multiple"
+          className="flex flex-wrap gap-2"
+        >
+          <ToggleGroupItem value="americas">Americas</ToggleGroupItem>
+          <ToggleGroupItem value="antarctic">Antarctic</ToggleGroupItem>
+          <ToggleGroupItem value="africa">Africa</ToggleGroupItem>
+          <ToggleGroupItem value="asia">Asia</ToggleGroupItem>
+          <ToggleGroupItem value="europe">Europe</ToggleGroupItem>
+          <ToggleGroupItem value="oceania">Oceania</ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+
+      {/* Status */}
+      <div className="space-y-3">
+        <p className="text-sm text-zinc-400">Status</p>
+
+        <div className="flex items-center space-x-2">
+          <Checkbox id="un" />
+          <label htmlFor="un" className="text-sm">
+            Member of the United Nations
+          </label>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Checkbox id="independent" defaultChecked />
+          <label htmlFor="independent" className="text-sm">
+            Independent
+          </label>
+        </div>
+      </div>
+
+          </div>
+
           {loading ? (
             <ClipLoader color="#03045E" size={50} />
           ) : (
