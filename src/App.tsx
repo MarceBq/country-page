@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useCountriesStore } from "./store/countriesStore";
 import "./styles/style.css";
 import { ClipLoader } from "react-spinners";
@@ -16,14 +16,18 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "./components/ui/toggle-group";
 
 function App() {
-  const { loading, fetchCountries, filteredCountries, filterCountries } =
-    useCountriesStore();
-
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
+  const {
+    loading,
+    fetchCountries,
+    filteredCountries,
+    applyFilters,
+    setSearchTerm,
+    setToggleRegion,
+    setUnMember,
+    setIndependent,
+    setSort,
+    filters,
+  } = useCountriesStore();
 
   useEffect(() => {
     setTimeout(() => {
@@ -32,8 +36,10 @@ function App() {
   }, [fetchCountries]);
 
   useEffect(() => {
-    filterCountries(searchTerm);
-  }, [searchTerm, filterCountries]);
+    applyFilters();
+  }, [filters]);
+
+  console.log(filters.regions);
 
   return (
     <div className="w-full min-h-screen bg-gray-900 text-white">
@@ -42,7 +48,6 @@ function App() {
       </div>
 
       <div className="w-[85%] max-w-6xl mx-auto -mt-24 rounded-xl bg-gray-800/90 backdrop-blur-md shadow-xl p-6">
-        
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg font-semibold">
             Found {filteredCountries.length} countries
@@ -52,19 +57,22 @@ function App() {
             type="text"
             placeholder="Search by Name, Region, Population"
             className="w-[300px] bg-gray-700 px-4 py-2 rounded-lg outline-none"
-            value={searchTerm}
-            onChange={handleChange}
+            value={filters.searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
-        
         <div className="grid grid-cols-[250px_1fr] gap-8">
-          
           <div className="space-y-6">
             <div>
               <p className="text-sm text-zinc-400 mb-2">Sort by</p>
 
-              <Select defaultValue="population">
+              <Select
+                defaultValue="population"
+                onValueChange={(value) =>
+                  setSort(value as "population" | "area")
+                }
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
@@ -72,7 +80,6 @@ function App() {
                 <SelectContent>
                   <SelectItem value="population">Population</SelectItem>
                   <SelectItem value="area">Area</SelectItem>
-                  <SelectItem value="name">Name</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -80,7 +87,13 @@ function App() {
             <div className="space-y-3">
               <p className="text-sm text-zinc-400">Region</p>
 
-              <ToggleGroup type="multiple" className="flex flex-wrap gap-2">
+              <ToggleGroup
+                type="multiple"
+                className="flex flex-wrap gap-2"
+                onValueChange={(regions) => {
+                  setToggleRegion(regions);
+                }}
+              >
                 <ToggleGroupItem value="americas">Americas</ToggleGroupItem>
                 <ToggleGroupItem value="antarctic">Antarctic</ToggleGroupItem>
                 <ToggleGroupItem value="africa">Africa</ToggleGroupItem>
@@ -94,14 +107,14 @@ function App() {
               <p className="text-sm text-zinc-400">Status</p>
 
               <div className="flex items-center space-x-2">
-                <Checkbox id="un" />
+                <Checkbox id="un"  onCheckedChange={(value) => setUnMember(!!value)} />
                 <label htmlFor="un" className="text-sm">
                   Member of the United Nations
                 </label>
               </div>
 
               <div className="flex items-center space-x-2">
-                <Checkbox id="independent" defaultChecked />
+                <Checkbox id="independent" onCheckedChange={(value) => setIndependent(!!value)} defaultChecked />
                 <label htmlFor="independent" className="text-sm">
                   Independent
                 </label>
@@ -109,7 +122,6 @@ function App() {
             </div>
           </div>
 
-          {/* TABLA */}
           <div>
             {loading ? (
               <div className="flex justify-center items-center h-60">

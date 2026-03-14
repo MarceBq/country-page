@@ -9,7 +9,7 @@ import type { Country } from "../types";
 
 type CountryTableProps = {
   data: Country[];
-  columns: ColumnDef<Country>[];
+  columns: ColumnDef<Omit<Country, "status" | "unMember" | "independent">>[];
 };
 
 export function CountryTable({ data, columns }: CountryTableProps) {

@@ -8,4 +8,14 @@ export type Country = {
     population: number;
     area: number;
     region: string;
+    unMember: boolean;
+    independent: boolean;
+}
+
+export type Filters = {
+    searchTerm: string;
+    regions: string[];
+    unMember: boolean;
+    independent: boolean;
+    sortBy: "population" | "area";
 }

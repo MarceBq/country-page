@@ -2,7 +2,7 @@ import { api } from "../api/axios";
 
 export const getAllCountries = async () => {
   const { data } = await api.get(
-    "/all?fields=name,flags,population,area,region",
+    "/all?fields=name,flags,population,area,region,unMember,independent",
   );
 
   return data;
